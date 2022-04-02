@@ -229,6 +229,252 @@
             }
         }
     }
+    function buildNewBlocks(color,direction){
+        var blockSize = Math.floor( Math.random()*(maxBlocks-minBlocks)) + minBlocks;
+        console.log("Size: " + blockSize);
+        var blockCells = [];
+        var totalCells = 0;
+        for(var i = 0;i<5;i++){
+            var cells = [];
+            for(var j = 0; j < 5; j++){
+                if(i == 2 && j == 2){
+                    cells.push(true);
+                    totalCells++;
+                } else {
+                    cells.push(false);
+                }
+            }
+            blockCells.push(cells);
+        }
+
+        for(var i = 0;i<5;i++){
+            for(var j = 0; j < 5; j++){
+                ctx.fillStyle = "black";
+                let blockx = (20+i) * gridSize;
+                let blocky = (7+ j) * gridSize;
+
+                ctx.fillRect(blockx,blocky,gridSize,gridSize);
+            }
+        }
+        while(totalCells < blockSize + 1){
+            for(var i = 0;i<5;i++){
+                for(var j = 0; j < 5; j++){
+                    if (blockCells[i][j]){
+                        ctx.fillStyle = color;
+                        ctx.fillRect((20 + i)*gridSize,(7+j)*gridSize,gridSize-2,gridSize-2);
+                    } else {
+                        ctx.fillStyle = "gray";
+                        ctx.fillRect((20 + i)*gridSize,(7+j)*gridSize,gridSize-2,gridSize-2);
+                    }
+                }
+            }
+            var randomDirection = directions[Math.floor(Math.random() * 4)];
+            var randomEntry = Math.floor(Math.random() * 5);
+            var placedThis = false;
+            //console.log(randomDirection + " " + randomEntry);
+            if(randomDirection == "down"){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(placedThis == false){
+                            if (j == randomEntry){
+                                if (blockCells[i][j]){
+
+                                }
+                                if (i + 1 < 5){
+                                    if (blockCells[i+1][j]){
+                                        blockCells[i][j] = true;
+                                        totalCells++;
+                                        placedThis = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(randomDirection == "up"){
+                for(var i = 4; i > -1; i--){
+                    for(var j = 4; j > -1; j--){
+                        if(placedThis == false){
+                            if (j == randomEntry){
+                                if (blockCells[i][j]){
+
+                                }
+                                if (i - 1 > -1){
+                                    if (blockCells[i-1][j]){
+                                        blockCells[i][j] = true;
+                                        totalCells++;
+                                        placedThis = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(randomDirection == "right"){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(placedThis == false){
+                            if (i == randomEntry){
+                                if (blockCells[i][j]){
+                                }
+                                if (j + 1 < 5){
+                                    if (blockCells[i][j + 1]){
+                                        blockCells[i][j] = true;
+                                        totalCells++;
+                                        placedThis = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(randomDirection == "left"){
+                for(var i = 4; i > -1; i--){
+                    for(var j = 4; j > -1; j--){
+                        if(placedThis == false){
+                            if (i == randomEntry){
+                                if (blockCells[i][j]){
+
+                                }
+                                if (j - 1 > -1){
+                                    if (blockCells[i][j-1]){
+                                        blockCells[i][j] = true;
+                                        totalCells++;
+                                        placedThis = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(direction == "up"){
+            var offsetx = 16-px;
+            var offsety = 19;
+            var placed = false;
+            while (placed == false){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(i+offsetx < tileCount && j+offsety < tileCount){
+                            if(blockCells[i][j]){
+                                if(colors.includes(cellCoords[i+offsetx][j+offsety-1].color) || ((i + offsetx == px) && (j + offsety - 1 == py))){
+                                    placed = true
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!placed){
+                    offsety--;
+                }
+            }
+
+            for(var i = 0; i < 5; i++){
+                for(var j = 0; j < 5; j++){
+                    if(blockCells[i][j]){
+                        cellCoords[i+offsetx][j+offsety].color=color;
+                        cellCoords[i+offsetx][j+offsety].drawCell(ctx);
+                    }
+                }
+            }
+        }        
+        if(direction == "down"){
+            var offsetx = 16-px;
+            var offsety = -5;
+            var placed = false;
+            while (placed == false){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(i+offsetx < tileCount && j+offsety < tileCount && i+offsetx >=0 && j+offsety >=0){
+                            if(blockCells[i][j]){
+                                if(colors.includes(cellCoords[i+offsetx][j+offsety+1].color) || ((i + offsetx == px) && (j + offsety + 1 == py))){
+                                    placed = true
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!placed){
+                    offsety++;
+                }
+            }
+
+            for(var i = 0; i < 5; i++){
+                for(var j = 0; j < 5; j++){
+                    if(blockCells[i][j]){
+                        cellCoords[i+offsetx][j+offsety].color=color;
+                        cellCoords[i+offsetx][j+offsety].drawCell(ctx);
+                    }
+                }
+            }
+        }
+        
+        if(direction == "left"){
+            var offsetx = 19;
+            var offsety = 16-px;
+            var placed = false;
+            while (placed == false){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(i+offsetx < tileCount && j+offsety < tileCount && i+offsetx >=0 && j+offsety >=0){
+                            if(blockCells[i][j]){
+                                if(colors.includes(cellCoords[i+offsetx-1][j+offsety].color) || ((i + offsetx - 1 == px) && (j + offsety == py))){
+                                    placed = true
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!placed){
+                    offsetx--;
+                }
+            }
+
+            for(var i = 0; i < 5; i++){
+                for(var j = 0; j < 5; j++){
+                    if(blockCells[i][j]){
+                        cellCoords[i+offsetx][j+offsety].color=color;
+                        cellCoords[i+offsetx][j+offsety].drawCell(ctx);
+                    }
+                }
+            }
+        }
+        
+        if(direction == "right"){
+            var offsetx = -5;
+            var offsety = 16-px;
+            var placed = false;
+            while (placed == false){
+                for(var i = 0; i < 5; i++){
+                    for(var j = 0; j < 5; j++){
+                        if(i+offsetx < tileCount && j+offsety < tileCount && i+offsetx >=0 && j+offsety >=0){
+                            if(blockCells[i][j]){
+                                if(colors.includes(cellCoords[i+offsetx+1][j+offsety].color) || ((i + offsetx + 1 == px) && (j + offsety == py))){
+                                    placed = true
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!placed){
+                    offsetx++;
+                }
+            }
+
+            for(var i = 0; i < 5; i++){
+                for(var j = 0; j < 5; j++){
+                    if(blockCells[i][j]){
+                        cellCoords[i+offsetx][j+offsety].color=color;
+                        cellCoords[i+offsetx][j+offsety].drawCell(ctx);
+                    }
+                }
+            }
+        }
+    }
     function gameFrame(){
         ctx.fillStyle="white";
         ctx.fillRect(px*gridSize,py*gridSize,gridSize,gridSize);
