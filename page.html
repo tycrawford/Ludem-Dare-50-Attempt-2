@@ -90,26 +90,26 @@
                 var thisCell = cellCoords[i][j];
                 if(j > 0){
                     if(thisCell.color == cellCoords[i][j-1].color){
-                        thisCell.openSide("bottom",ctx);
-                        cellCoords[i][j-1].openSide("top",ctx);
+                        thisCell.openSide("top",ctx);
+                        cellCoords[i][j-1].openSide("bottom",ctx);
                     }
                 }
                 if(j + 1 < tileCount){
                     if(thisCell.color == cellCoords[i][j+1].color){
-                        thisCell.openSide("top",ctx);
-                        cellCoords[i][j+1].openSide("bottom",ctx);
+                        thisCell.openSide("bottom",ctx);
+                        cellCoords[i][j+1].openSide("top",ctx);
                     }
                 }
                 if(i > 0){
                     if(thisCell.color == cellCoords[i-1][j].color){
-                        thisCell.openSide("right",ctx);
-                        cellCoords[i-1][j].openSide("left",ctx);
+                        thisCell.openSide("left",ctx);
+                        cellCoords[i-1][j].openSide("right",ctx);
                     }
                 }
                 if(i + 1 < tileCount){
                     if(thisCell.color == cellCoords[i+1][j].color){
-                        thisCell.openSide("left",ctx);
-                        cellCoords[i+1][j].openSide("right",ctx);
+                        thisCell.openSide("right",ctx);
+                        cellCoords[i+1][j].openSide("left",ctx);
                     }
                 }
 
