@@ -1,0 +1,245 @@
+
+<canvas id="game" width="380" height="380">
+
+</canvas>
+<script>
+    colors = ["blue","red","yellow","green"];
+    cellCoords=[];
+
+    class Cell{
+        constructor(x,y,color,gridCellSize){
+            //grid coords
+            this.y = y;
+            this.x = x;
+
+            //indicative of having these borders
+            this.top = true; 
+            this.bottom = true;
+            this.left = true;
+            this.right= true;
+            this.color = color;
+            this.cellSize = gridCellSize;
+        }
+        openSide(side,context)
+        {
+            switch(side){
+                case "bottom":
+                    this.bottom = false;
+                    break;
+                case "top":
+                    this.top = false;
+                    break;
+                case "left": 
+                    this.left = false;
+                    break;
+                case "right":
+                    this.right = false;
+                    break;
+            }
+            this.drawCell(context);
+        }
+        drawCell(context)
+        {
+            ctx.fillStyle="white";
+            //ctx.fillRect(this.x,this.y,this.cellSize,this.cellSize);
+            var drawX = this.x + 2 - (this.left == true && this.right == false ? 2 : 1);
+            var drawY = this.y + 2 - (this.top == true && this.bottom == false ? 2 : 1);
+            var height = this.cellSize - (this.bottom ? 1 : 0) - (this.top ? 1 : 0);
+            var width = this.cellSize - (this.left ? 1 : 0) - (this.right ? 1 : 0);
+
+            ctx.fillStyle=this.color;
+            ctx.fillRect(drawX,drawY,width,height);
+        }
+        changeColor(color,context){
+            this.color = color;
+            this.drawCell(context);
+        }
+    }
+    window.onload = function() {
+        canvas = document.getElementById("game");
+        ctx = canvas.getContext("2d");
+        document.addEventListener("keydown",keyPush);
+        setInterval(gameFrame, 1000/15);
+        ctx.fillStyle="gray";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        for(var i = 0;i<tileCount;i++){
+            for(var j = 0; j < tileCount; j++){
+                /*
+                ctx.fillStyle= `rgb(
+                    ${Math.floor(Math.random()*255)},
+                    ${Math.floor(Math.random()*255)},
+                    ${Math.floor(Math.random()*255)}
+                )`;*/
+                ctx.fillStyle="black";
+                ctx.fillRect(i*gridSize,j*gridSize,gridSize,gridSize);
+            }
+        }
+        for(var i = 0;i<tileCount;i++){
+            var cells = [];
+            for(var j = 0; j < tileCount; j++){
+                var thisCell = new Cell(i*gridSize,j*gridSize,colors[Math.floor(Math.random()*colors.length)],gridSize);
+                thisCell.drawCell(ctx);
+                cells.push(thisCell);
+            }
+            cellCoords.push(cells);
+        }
+
+        for(var i = 0; i < tileCount; i++){
+            for(var j = 0; j < tileCount; j++){
+                var thisCell = cellCoords[i][j];
+                if(j > 0){
+                    if(thisCell.color == cellCoords[i][j-1].color){
+                        thisCell.openSide("bottom",ctx);
+                        cellCoords[i][j-1].openSide("top",ctx);
+                    }
+                }
+                if(j + 1 < tileCount){
+                    if(thisCell.color == cellCoords[i][j+1].color){
+                        thisCell.openSide("top",ctx);
+                        cellCoords[i][j+1].openSide("bottom",ctx);
+                    }
+                }
+                if(i > 0){
+                    if(thisCell.color == cellCoords[i-1][j].color){
+                        thisCell.openSide("right",ctx);
+                        cellCoords[i-1][j].openSide("left",ctx);
+                    }
+                }
+                if(i + 1 < tileCount){
+                    if(thisCell.color == cellCoords[i+1][j].color){
+                        thisCell.openSide("left",ctx);
+                        cellCoords[i+1][j].openSide("right",ctx);
+                    }
+                }
+
+            }
+        }
+        //ctx.fillStyle="white";
+        //ctx.fillRect(9*gridSize,9*gridSize,gridSize-2,gridSize-2);
+        //demonstrates full border
+        //ctx.fillStyle="white";
+
+        //ctx.fillRect(6*gridSize-1,6*gridSize-1,gridSize,gridSize);
+        //ctx.fillStyle="black";
+        //ctx.fillRect(6*gridSize,6*gridSize,gridSize-2,gridSize-2);
+
+        //demonstrates missing top
+        //ctx.fillStyle="white";
+
+        //ctx.fillRect(6*gridSize-1,8*gridSize-1,gridSize,gridSize);
+        //ctx.fillStyle="red";
+        //ctx.fillRect(6*gridSize,8*gridSize-1,gridSize-2,gridSize-1); //18x18 black space on top of 20x20 whitespace
+
+        //demonstrates missing left
+        //ctx.fillStyle="white";
+
+        //ctx.fillRect(6*gridSize-1,10*gridSize-1,gridSize,gridSize);
+        //ctx.fillStyle="blue";
+        //ctx.fillRect(6*gridSize-1,10*gridSize,gridSize-1,gridSize-2); //18x18 black space on top of 20x20 whitespace
+
+        //demonstrates missing left and right
+        //ctx.fillStyle="white";
+
+        //ctx.fillRect(6*gridSize-1,12*gridSize-1,gridSize,gridSize);
+        //ctx.fillStyle="green";
+        //ctx.fillRect(6*gridSize-1,12*gridSize,gridSize,gridSize-2); //18x18 black space on top of 20x20 whitespace
+
+        //demonstrates missing right
+        //ctx.fillStyle="white";
+
+        //ctx.fillRect(6*gridSize-1,13*gridSize-1,gridSize,gridSize);
+        //ctx.fillStyle="brown";
+        //ctx.fillRect(6*gridSize,13*gridSize,gridSize-1,gridSize-2); //18x18 black space on top of 20x20 whitespace
+
+        //cellWidth = gridSize - (cellLeft ? 1 : 0) - (cellRight ? 1 : 0)
+        //cellHeight = gridSize - (cellBottom ? 1 : 0) - (cellTop ? 1 : 0)
+        //cellX = cell.X - (cellLeft == true && cellRight == false ? 0 : 1)
+        //cellY = cell.Y - (cellTop == true && cellBottom == false ? 0 : 1)
+    }
+    bombs= 1;
+    score= 0;
+    xv=0;
+    yv=0;
+
+    gridSize = 20; //20px tiles
+    tileCount = 19; //grid of 20x20 tiles
+    ax = 15;
+    ay = 15;
+
+    px=9;
+    py=9;
+    trail=[];
+    tail = 5;
+    function keyPush(event){
+        //maybe use this instead to change px py rather than xv yv
+        switch(event.keyCode){
+            case 37: //left
+                xv=-1;
+                yv=0;
+                break;
+            case 38: //up
+                xv=0;
+                yv=-1;
+                break;
+            case 39: //right
+                xv=1;
+                yv=0;
+                break;
+            case 40: //down
+                xv=0;
+                yv=1;
+                break;
+        }
+    }
+    function gameFrame(){
+        px += xv;
+        py += yv;
+        if(px<0){
+            px = tileCount - 1;
+        }
+        if (px>tileCount-1){
+            px=0;
+        }
+        if (py<0){
+            py = tileCount - 1;
+        }
+        if (py>tileCount-1){
+            py = 0;
+        }
+
+        /*
+        ctx.fillStyle="white";
+        for(var i = 0; i< trail.length;i++){
+            ctx.fillRect(trail[i].x*gridSize, trail[i].y*gridSize, gridSize - 2, gridSize -2);
+            if(trail[i].x == px && trail[i].y==py){
+                tail = 5;
+            }
+        }
+        trail.push({x:px,y:py});
+        while(trail.length> tail){
+            trail.shift();
+        }
+        if (ax == px && ay == py){
+            tail++;
+            ax= Math.floor(Math.random()*tileCount);
+            ay= Math.floor(Math.random()*tileCount)
+        }
+        ctx.fillStyle="red";
+        ctx.fillRect(ax*gridSize,ay*gridSize,gridSize - 2, gridSize - 2);
+        */
+    }
+</script>
+<div class="title">
+    Starting Title
+</div>
+<div>
+    Score:
+    <div id="score">
+
+    </div>
+    Bombs:
+    <div id="bombs">
+
+    </div>
+</div>
