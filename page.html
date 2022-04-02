@@ -41,9 +41,9 @@
         drawCell(context)
         {
             ctx.fillStyle="white";
-            //ctx.fillRect(this.x,this.y,this.cellSize,this.cellSize);
-            var drawX = this.x + 2 - (this.left == true && this.right == false ? 2 : 1);
-            var drawY = this.y + 2 - (this.top == true && this.bottom == false ? 2 : 1);
+            ctx.fillRect(this.x,this.y,this.cellSize,this.cellSize);
+            var drawX = this.x + (this.left ? 1 : 0);
+            var drawY = this.y + (this.top ? 1 : 0);
             var height = this.cellSize - (this.bottom ? 1 : 0) - (this.top ? 1 : 0);
             var width = this.cellSize - (this.left ? 1 : 0) - (this.right ? 1 : 0);
 
