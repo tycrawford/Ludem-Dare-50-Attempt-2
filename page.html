@@ -5,7 +5,19 @@
 <script>
     colors = ["blue","red","yellow","green"];
     cellCoords=[];
+    bombs= 1;
+    score= 0;
+    bombCost = 6;
+    gridSize = 20; //20px tiles
+    tileCount = 19; //grid of 19x19 tiles
+    ax = 15;
+    ay = 15;
 
+    px=9;
+    py=9;
+
+    trail=[];
+    tail = 5;
     class Cell{
         constructor(x,y,color,gridCellSize){
             //grid coords
@@ -110,19 +122,6 @@
             }
         }
     }
-    bombs= 1;
-    score= 0;
-    bombCost = 6;
-
-    gridSize = 20; //20px tiles
-    tileCount = 19; //grid of 20x20 tiles
-    ax = 15;
-    ay = 15;
-
-    px=9;
-    py=9;
-    trail=[];
-    tail = 5;
     function keyPush(event){
         cellCoords[px][py].changeColor("black",ctx);
         //maybe use this instead to change px py rather than xv yv
