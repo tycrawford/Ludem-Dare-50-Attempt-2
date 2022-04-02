@@ -124,15 +124,98 @@
     tail = 5;
     function keyPush(event){
         //maybe use this instead to change px py rather than xv yv
+        var moved = false;
+        var currentCell = cellCoords[px][py];
         switch(event.keyCode){
             case 37: //left
+                var targetCell = cellCoords[px-1][py];
+                if(px >0){
+                    if(currentCell.left && bombs > 0){
+                        bombs--;
+                        currentCell.openSide("left",ctx);
+                        targetCell.openSide("right",ctx);
+                        px--;
+                    } else  if (currentCell.left == false) {
+                        currentCell.openSide("left",ctx);
+                        targetCell.openSide("right",ctx);
+                        px--;
+                    } else if (targetCell.color == "black"){
+                        currentCell.openSide("left",ctx);
+                        targetCell.openSide("right",ctx);
+                        px--;
+
+                    }
+                    moved = colors.includes(cellCoords[px][py].color);
+                }
                 break;
             case 38: //up
+                var targetCell = cellCoords[px][py-1];
+                if(py > 0){
+                    if(currentCell.top && bombs > 0){
+                        bombs --;
+                        currentCell.openSide("top",ctx);
+                        targetCell.openSide("bottom",ctx);
+                        py--
+                    } else if (currentCell.top == false){
+                        currentCell.openSide("top",ctx);
+                        targetCell.openSide("bottom",ctx);
+                        py--;
+                    }else if (targetCell.color == "black"){
+                        currentCell.openSide("top",ctx);
+                        targetCell.openSide("bottom",ctx);
+                        py--;
+                    }
+                    moved = colors.includes(cellCoords[px][py].color);
+                }
                 break;
             case 39: //right
+                var targetCell = cellCoords[px + 1][py];
+                if(px<tileCount - 1){
+                    if(currentCell.right && bombs > 0){
+                        bombs--;
+                        currentCell.openSide("right",ctx);
+                        targetCell.openSide("left",ctx);
+                        px++;
+                    }
+                    else if(currentCell.right == false){
+                        currentCell.openSide("right",ctx);
+                        targetCell.openSide("left",ctx);
+                        px++;
+                    }
+                    else if(targetCell.color == "black"){
+                        currentCell.openSide("right",ctx);
+                        targetCell.openSide("left",ctx);
+                        px++;
+                    }
+                    moved = colors.includes(cellCoords[px][py].color);
+                }
                 break;
             case 40: //down
+                var targetCell = cellCoords[px][py + 1];
+                if(py<tileCount - 1){
+                    if(currentCell.bottom && bombs > 0){
+                        bombs--;
+                        currentCell.openSide("bottom",ctx);
+                        targetCell.openSide("top")
+                        py++;
+                    } else if (currentCell.bottom == false){
+                        currentCell.openSide("bottom",ctx);
+                        targetCell.openSide("top")
+                        py++;
+                    } else if (targetCell.color == "black"){
+                        currentCell.openSide("bottom",ctx);
+                        targetCell.openSide("top")
+                        py++;
+                    }
+                    moved = colors.includes(cellCoords[px][py].color);
+                }
                 break;
+        }
+        if(moved){
+            score ++;
+            if (score % 6 == 0 ){
+                bombs++;
+            }
         }
     }
     function gameFrame(){
