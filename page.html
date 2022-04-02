@@ -123,6 +123,7 @@
     trail=[];
     tail = 5;
     function keyPush(event){
+        cellCoords[px][py].changeColor("black",ctx);
         //maybe use this instead to change px py rather than xv yv
         var moved = false;
         var currentCell = cellCoords[px][py];
