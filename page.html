@@ -73,29 +73,6 @@
             this.drawCell(context);
         }
     }
-    window.onload = function() {
-        canvas = document.getElementById("game");
-        ctx = canvas.getContext("2d");
-        document.addEventListener("keydown",keyPush);
-        setInterval(gameFrame, 1000/15);
-        ctx.fillStyle="gray";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        
-        for(var i = 0;i<tileCount;i++){
-            for(var j = 0; j < tileCount; j++){
-                ctx.fillStyle="black";
-                ctx.fillRect(i*gridSize,j*gridSize,gridSize,gridSize);
-            }
-        }
-        for(var i = 0;i<tileCount;i++){
-            var cells = [];
-            for(var j = 0; j < tileCount; j++){
-                var thisCell = new Cell(i*gridSize,j*gridSize,colors[Math.floor(Math.random()*colors.length)],gridSize);
-                thisCell.drawCell(ctx);
-                cells.push(thisCell);
-            }
-            cellCoords.push(cells);
-        }
 
         for(var i = 0; i < tileCount; i++){
             for(var j = 0; j < tileCount; j++){
@@ -127,6 +104,36 @@
 
             }
         }
+    }
+    window.onload = function() {
+        canvas = document.getElementById("game");
+        ctx = canvas.getContext("2d");
+        document.addEventListener("keydown",keyPush);
+        setInterval(gameFrame, 1000/15);
+        ctx.fillStyle="gray";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        
+        for(var i = 0;i<tileCount;i++){
+            for(var j = 0; j < tileCount; j++){
+                ctx.fillStyle="black";
+                ctx.fillRect(i*gridSize,j*gridSize,gridSize,gridSize);
+            }
+        }
+        for(var i = 0;i<tileCount;i++){
+            var cells = [];
+            for(var j = 0; j < tileCount; j++){
+                var thisCell = new Cell(i*gridSize,j*gridSize,"black",gridSize);
+                thisCell.drawCell(ctx);
+                cells.push(thisCell);
+            }
+            cellCoords.push(cells);
+        }
+        buildNewBlocks("red","left");
+        buildNewBlocks("blue","right");
+        buildNewBlocks("green","up");
+        buildNewBlocks("yellow","down");
+        
+        mergeColors(cellCoords);
     }
     function keyPush(event){
         cellCoords[px][py].changeColor("black",ctx);
