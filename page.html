@@ -5,6 +5,7 @@
 <script>
     colors = ["blue","red","yellow","green"];
     cellCoords=[];
+    keyPresses = 1;
     bombs= 1;
     score= 0;
     bombCost = 6;
@@ -129,6 +130,7 @@
         var currentCell = cellCoords[px][py];
         switch(event.keyCode){
             case 37: //left
+                keyPresses++;
                 var targetCell = cellCoords[px-1][py];
                 if(px >0){
                     if(currentCell.left && bombs > 0){
@@ -150,6 +152,7 @@
                 }
                 break;
             case 38: //up
+                keyPresses++;
                 var targetCell = cellCoords[px][py-1];
                 if(py > 0){
                     if(currentCell.top && bombs > 0){
@@ -170,6 +173,7 @@
                 }
                 break;
             case 39: //right
+                keyPresses++;
                 var targetCell = cellCoords[px + 1][py];
                 if(px<tileCount - 1){
                     if(currentCell.right && bombs > 0){
@@ -192,6 +196,7 @@
                 }
                 break;
             case 40: //down
+                keyPresses++;
                 var targetCell = cellCoords[px][py + 1];
                 if(py<tileCount - 1){
                     if(currentCell.bottom && bombs > 0){
@@ -224,7 +229,7 @@
         ctx.fillRect(px*gridSize,py*gridSize,gridSize,gridSize);
         document.getElementById("score").innerText = score;
         document.getElementById("bombs").innerText = bombs;
-
+        document.getElementById("keypresses").innerText = keyPresses;
         for(var i = 0; i < tileCount; i++){
             for(var j = 0; j < tileCount; j++){
                 var thisCell = cellCoords[i][j];
@@ -288,6 +293,10 @@
     </div>
     Bombs:
     <div id="bombs">
+
+    </div>
+    Keypresses:
+    <div id="keypresses">
 
     </div>
 </div>
