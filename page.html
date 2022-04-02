@@ -74,31 +74,32 @@
         }
     }
 
+    function mergeColors(cellArray){
         for(var i = 0; i < tileCount; i++){
             for(var j = 0; j < tileCount; j++){
-                var thisCell = cellCoords[i][j];
+                var thisCell = cellArray[i][j];
                 if(j > 0){
-                    if(thisCell.color == cellCoords[i][j-1].color){
+                    if(thisCell.color == cellArray[i][j-1].color){
                         thisCell.openSide("top",ctx);
-                        cellCoords[i][j-1].openSide("bottom",ctx);
+                        cellArray[i][j-1].openSide("bottom",ctx);
                     }
                 }
                 if(j + 1 < tileCount){
-                    if(thisCell.color == cellCoords[i][j+1].color){
+                    if(thisCell.color == cellArray[i][j+1].color){
                         thisCell.openSide("bottom",ctx);
-                        cellCoords[i][j+1].openSide("top",ctx);
+                        cellArray[i][j+1].openSide("top",ctx);
                     }
                 }
                 if(i > 0){
-                    if(thisCell.color == cellCoords[i-1][j].color){
+                    if(thisCell.color == cellArray[i-1][j].color){
                         thisCell.openSide("left",ctx);
-                        cellCoords[i-1][j].openSide("right",ctx);
+                        cellArray[i-1][j].openSide("right",ctx);
                     }
                 }
                 if(i + 1 < tileCount){
-                    if(thisCell.color == cellCoords[i+1][j].color){
+                    if(thisCell.color == cellArray[i+1][j].color){
                         thisCell.openSide("right",ctx);
-                        cellCoords[i+1][j].openSide("left",ctx);
+                        cellArray[i+1][j].openSide("left",ctx);
                     }
                 }
 
