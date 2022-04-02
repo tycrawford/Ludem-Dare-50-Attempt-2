@@ -115,52 +115,9 @@
 
             }
         }
-        //ctx.fillStyle="white";
-        //ctx.fillRect(9*gridSize,9*gridSize,gridSize-2,gridSize-2);
-        //demonstrates full border
-        //ctx.fillStyle="white";
-
-        //ctx.fillRect(6*gridSize-1,6*gridSize-1,gridSize,gridSize);
-        //ctx.fillStyle="black";
-        //ctx.fillRect(6*gridSize,6*gridSize,gridSize-2,gridSize-2);
-
-        //demonstrates missing top
-        //ctx.fillStyle="white";
-
-        //ctx.fillRect(6*gridSize-1,8*gridSize-1,gridSize,gridSize);
-        //ctx.fillStyle="red";
-        //ctx.fillRect(6*gridSize,8*gridSize-1,gridSize-2,gridSize-1); //18x18 black space on top of 20x20 whitespace
-
-        //demonstrates missing left
-        //ctx.fillStyle="white";
-
-        //ctx.fillRect(6*gridSize-1,10*gridSize-1,gridSize,gridSize);
-        //ctx.fillStyle="blue";
-        //ctx.fillRect(6*gridSize-1,10*gridSize,gridSize-1,gridSize-2); //18x18 black space on top of 20x20 whitespace
-
-        //demonstrates missing left and right
-        //ctx.fillStyle="white";
-
-        //ctx.fillRect(6*gridSize-1,12*gridSize-1,gridSize,gridSize);
-        //ctx.fillStyle="green";
-        //ctx.fillRect(6*gridSize-1,12*gridSize,gridSize,gridSize-2); //18x18 black space on top of 20x20 whitespace
-
-        //demonstrates missing right
-        //ctx.fillStyle="white";
-
-        //ctx.fillRect(6*gridSize-1,13*gridSize-1,gridSize,gridSize);
-        //ctx.fillStyle="brown";
-        //ctx.fillRect(6*gridSize,13*gridSize,gridSize-1,gridSize-2); //18x18 black space on top of 20x20 whitespace
-
-        //cellWidth = gridSize - (cellLeft ? 1 : 0) - (cellRight ? 1 : 0)
-        //cellHeight = gridSize - (cellBottom ? 1 : 0) - (cellTop ? 1 : 0)
-        //cellX = cell.X - (cellLeft == true && cellRight == false ? 0 : 1)
-        //cellY = cell.Y - (cellTop == true && cellBottom == false ? 0 : 1)
     }
     bombs= 1;
     score= 0;
-    xv=0;
-    yv=0;
 
     gridSize = 20; //20px tiles
     tileCount = 19; //grid of 20x20 tiles
@@ -175,38 +132,16 @@
         //maybe use this instead to change px py rather than xv yv
         switch(event.keyCode){
             case 37: //left
-                xv=-1;
-                yv=0;
                 break;
             case 38: //up
-                xv=0;
-                yv=-1;
                 break;
             case 39: //right
-                xv=1;
-                yv=0;
                 break;
             case 40: //down
-                xv=0;
-                yv=1;
                 break;
         }
     }
     function gameFrame(){
-        px += xv;
-        py += yv;
-        if(px<0){
-            px = tileCount - 1;
-        }
-        if (px>tileCount-1){
-            px=0;
-        }
-        if (py<0){
-            py = tileCount - 1;
-        }
-        if (py>tileCount-1){
-            py = 0;
-        }
 
         /*
         ctx.fillStyle="white";
