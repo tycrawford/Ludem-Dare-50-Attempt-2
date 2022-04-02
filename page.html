@@ -221,7 +221,42 @@
         }
     }
     function gameFrame(){
+        ctx.fillStyle="white";
+        ctx.fillRect(px*gridSize,py*gridSize,gridSize,gridSize);
+        document.getElementById("score").innerText = score;
+        document.getElementById("bombs").innerText = bombs;
 
+        for(var i = 0; i < tileCount; i++){
+            for(var j = 0; j < tileCount; j++){
+                var thisCell = cellCoords[i][j];
+                if (i != px && j != py){
+                    if(j > 0){
+                        if(thisCell.color == "black" && cellCoords[i][j-1].color == "black"){
+                            thisCell.openSide("top",ctx);
+                            cellCoords[i][j-1].openSide("bottom",ctx);
+                        }
+                    }
+                    if(j + 1 < tileCount){
+                        if(thisCell.color  == "black" &&  cellCoords[i][j+1].color == "black" ){
+                            thisCell.openSide("bottom",ctx);
+                            cellCoords[i][j+1].openSide("top",ctx);
+                        }
+                    }
+                    if(i > 0){
+                        if(thisCell.color == "black" &&  cellCoords[i-1][j].color == "black" ){
+                            thisCell.openSide("left",ctx);
+                            cellCoords[i-1][j].openSide("right",ctx);
+                        }
+                    }
+                    if(i + 1 < tileCount){
+                        if(thisCell.color == "black" && cellCoords[i+1][j].color == "black" ){
+                            thisCell.openSide("right",ctx);
+                            cellCoords[i+1][j].openSide("left",ctx);
+                        }
+                    }
+                }
+            }
+        }
         /*
         ctx.fillStyle="white";
         for(var i = 0; i< trail.length;i++){
